@@ -4,14 +4,16 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const helmet = require("helmet");
 const mongoose = require("mongoose");
-const { config } = require("./config/database");
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(helmet());
 
 mongoose
-  .connect("mongodb+srv://doni:xQfW3pEb!@cluster0.okj27.mongodb.net/myFirstDatabase?retryWrites=true&w=majoritygrocery-app", config)
+  .connect("mongodb+srv://doni:xQfW3pEb!@cluster0.okj27.mongodb.net/grocery-app?retryWrites=true&w=majority", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("Connected to database");
   })
