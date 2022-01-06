@@ -29,6 +29,6 @@ app.use("/", index);
 app.use("/users", users);
 app.use("/products", products);
 
-app.listen(3000, () => {
-  console.log("Server started on port 3000");
+app.listen(4000, () => {
+  console.log("Server started on port 4000");
 });

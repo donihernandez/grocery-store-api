@@ -8,8 +8,8 @@ const purchaseSchema = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
     name: String,
     email: String,
-    account_balance: Number,
-    is_member: Boolean,
+    accountBalance: Number,
+    isMember: Boolean,
     purchases: [purchaseSchema],
 });
 

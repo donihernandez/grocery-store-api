@@ -23,27 +23,32 @@ router.post("/:id", async (req, res) => {
 
   const product = await Product.findById(req.params.id)
     .exec()
-    .catch((err) => res.status(404).json({ message: "No product found" }));
+    .catch((err) => res.status(404).send("No product found"));
 
-  if (user.account_balance < product.price) {
-    return res.status(400).json({ message: "Not enough money" });
+  if (user.isMember) {
+    if (user.accountBalance < product.price) {
+      res.status(400).json({ error: "Insufficient funds" });
+      return;
+    }
+
+    if (product.quantityInStock === 0) {
+      return res.status(400).json({ message: "Product out of stock" });
+    }
+
+    const purchase = {
+      product: product.name,
+      price: product.price
+    };
+
+    user.purchases.push(purchase);
+    user.accountBalance -= product.price;
+    product.quantityInStock -= 1;
+    await user.save();
+    await product.save();
+    res.json(user);
+  } else {
+    return res.status(400).json({ message: "User is not a member" });
   }
-
-  if (product.quantityInStock === 0) {
-    return res.status(400).json({ message: "Product out of stock" });
-  }
-
-  const purchase = {
-    product: product.name,
-    price: product.price
-  };
-
-  user.purchases.push(purchase);
-  user.account_balance -= product.price;
-  product.quantityInStock -= 1;
-  await user.save();
-  await product.save();
-  res.json(user);
 });
 
 module.exports = router;
