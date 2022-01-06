@@ -15,6 +15,7 @@ router.get("/:id", (req, res) => {
     .catch((err) => res.status(404).json({ message: "No product found" }));
 });
 
+// Purchase a product
 router.post("/:id", async (req, res) => {
   const { userId } = req.body;
   const user = await User.findById(userId)
